@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:ExcelExport"
         mc:Ignorable="d"
         Title="ExcelExport" Height="450" Width="800">
-    <Grid>
-        <Label Content="{Binding TestText}" />
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Height="20">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open" />
+            </MenuItem>
+        </Menu>
+        <Button Content="Open files" FontSize="20" Background="White" />
+    </DockPanel>
 </Window>
