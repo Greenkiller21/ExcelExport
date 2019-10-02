@@ -9,9 +9,9 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="20">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open" />
+                <MenuItem Header="_Open" Command="{Binding OpenFiles}" />
             </MenuItem>
         </Menu>
-        <Button Content="Open files" FontSize="20" Background="White" />
+        <Button Content="Open files" FontSize="20" Background="White" Command="{Binding OpenFiles}" />
     </DockPanel>
 </Window>
