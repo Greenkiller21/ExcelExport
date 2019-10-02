@@ -14,12 +14,17 @@ namespace ExcelExport.Excel
 
         public ExcelFile(string filePath)
         {
-            Application excelFile = new Application();
-            
+            //For image
+            Spire.Xls.Workbook excelFileSpire = new Spire.Xls.Workbook();
+            excelFileSpire.LoadFromFile(filePath);
 
-            foreach()
+            //For PDF
+            Application excelFileInterop = new Application();
+            Workbook excelBook = excelFileInterop.Workbooks.Open(filePath);
+
+            for(int idx = 0; idx <= excelFileSpire.Worksheets.Count; idx++)
             {
-                excelSheets.Add(new ExcelSheet());
+                excelSheets.Add(new ExcelSheet(excelFileSpire.Worksheets[idx], excelFileInterop.Worksheets[idx]));
             }
         }
     }
