@@ -1,4 +1,5 @@
-﻿using ExcelExport.Utils;
+﻿using ExcelExport.Excel;
+using ExcelExport.Utils;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,7 @@ namespace ExcelExport.ModelViews
 {
     class MainViewModel : BaseViewModel
     {
-        private string _testText = "test";
-        public string TestText
-        {
-            get => _testText;
-            set => SetProperty(ref _testText, value);
-        }
+        private ExcelFile file;
 
         public ICommand OpenFiles
         {
@@ -31,10 +27,10 @@ namespace ExcelExport.ModelViews
                 ofdFile.InitialDirectory = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\Downloads");
                 if (ofdFile.ShowDialog() != true) return;
 
-                string fileName = ofdFile.FileNames?.First();
-                if (string.IsNullOrWhiteSpace(fileName)) return;
+                string filePath = ofdFile.FileNames?.First();
+                if (string.IsNullOrWhiteSpace(filePath)) return;
 
-
+                file = new ExcelFile(filePath);
             });
         }
     }

@@ -20,7 +20,7 @@ namespace ExcelExport.Excel
             this.excelSheetInterop = excelSheetInterop;
         }
 
-        public Image Previsualisation()
+        public Image Preview()
         {
             Image preview;
 

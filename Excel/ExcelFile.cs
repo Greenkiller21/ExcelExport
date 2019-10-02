@@ -10,10 +10,12 @@ namespace ExcelExport.Excel
     class ExcelFile
     {
 
-        public List<ExcelSheet> excelSheets { get; private set; }
+        public List<ExcelSheet> ExcelSheets { get; private set; }
 
         public ExcelFile(string filePath)
         {
+            ExcelSheets = new List<ExcelSheet>();
+
             //For image
             Spire.Xls.Workbook excelFileSpire = new Spire.Xls.Workbook();
             excelFileSpire.LoadFromFile(filePath);
@@ -22,9 +24,9 @@ namespace ExcelExport.Excel
             Application excelFileInterop = new Application();
             Workbook excelBook = excelFileInterop.Workbooks.Open(filePath);
 
-            for(int idx = 0; idx <= excelFileSpire.Worksheets.Count; idx++)
+            for(int idx = 0; idx < excelFileSpire.Worksheets.Count; idx++)
             {
-                excelSheets.Add(new ExcelSheet(excelFileSpire.Worksheets[idx], excelFileInterop.Worksheets[idx]));
+                ExcelSheets.Add(new ExcelSheet(excelFileSpire.Worksheets[idx], excelBook.Sheets[idx+1]));
             }
         }
     }
