@@ -38,6 +38,24 @@
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="MvvmCross, Version=6.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmCross.6.4.1\lib\net461\MvvmCross.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Core, Version=5.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmCross.Core.5.7.0\lib\net45\MvvmCross.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Platform, Version=5.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmCross.Platform.5.7.0\lib\net45\MvvmCross.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Platform.Wpf, Version=5.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmCross.Platform.5.7.0\lib\net45\MvvmCross.Platform.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Platforms.Wpf, Version=6.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmCross.Platforms.Wpf.6.4.1\lib\net461\MvvmCross.Platforms.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Wpf, Version=5.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmCross.Core.5.7.0\lib\net45\MvvmCross.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Spire.Common, Version=2.9.9.6046, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
       <HintPath>packages\Spire.XLS.9.9.13\lib\net46\Spire.Common.dll</HintPath>
     </Reference>
@@ -51,6 +69,11 @@
       <HintPath>packages\Spire.XLS.9.9.13\lib\net46\Spire.XLS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Console, Version=4.0.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Console.4.3.1\lib\net46\System.Console.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
@@ -71,7 +94,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppStart.cs" />
     <Compile Include="Utils\Command.cs" />
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,10 +113,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelViews\BaseViewModel.cs" />
-    <Compile Include="ModelViews\MainViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -115,6 +145,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

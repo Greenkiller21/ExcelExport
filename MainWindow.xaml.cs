@@ -1,4 +1,4 @@
-﻿using ExcelExport.ModelViews;
+﻿using ExcelExport.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +16,14 @@ using System.Windows.Shapes;
 using Spire.Xls;
 using System.Drawing;
 using System.IO;
+using MvvmCross.Platforms.Wpf.Views;
 
 namespace ExcelExport
 {
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MvxWindow
     {
         Excel.ExcelFile test;
 
