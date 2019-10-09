@@ -1,6 +1,8 @@
 ﻿using ExcelExport.Excel;
 using ExcelExport.Utils;
 using Microsoft.Win32;
+using MvvmCross;
+using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,7 @@ namespace ExcelExport.ViewModels
 
         public ICommand OpenFiles
         {
-            get => new Command(() => 
+            get => new Command(async () => 
             {
                 OpenFileDialog ofdFile = new OpenFileDialog();
                 ofdFile.Filter = "Excel files (*.xlsx)|*.xlsx";
@@ -32,6 +34,8 @@ namespace ExcelExport.ViewModels
                 if (string.IsNullOrWhiteSpace(filePath)) return;
 
                 file = new ExcelFile(filePath);
+
+                await Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<PreviewViewModel, ExcelFile>(file);
             });
         }
     }

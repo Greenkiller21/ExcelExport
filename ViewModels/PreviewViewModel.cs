@@ -24,6 +24,13 @@ namespace ExcelExport.ViewModels
             set => SetProperty(ref _excelFile, value);
         }
 
+        private string _test;
+        public string test
+        {
+            get => _test;
+            set => SetProperty(ref _test, value);
+        }
+
         public Bitmap CurrentPreview
         {
             get => _currentPreview;
@@ -33,6 +40,7 @@ namespace ExcelExport.ViewModels
         public override void Prepare(ExcelFile parameter)
         {
             ExcelFile = parameter;
+            test = parameter.ExcelSheets[0].SheetName;
             CurrentPreview = ExcelFile.ExcelSheets[0].Preview();
         }
     }
