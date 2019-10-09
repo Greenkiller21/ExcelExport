@@ -20,6 +20,11 @@ namespace ExcelExport.Excel
         private Spire.Xls.Worksheet excelSheetSpire;
         private Worksheet excelSheetInterop;
 
+        public string SheetName
+        {
+            get { return excelSheetInterop.Name; }
+        }
+
         public ExcelSheet(Spire.Xls.Worksheet excelSheetSpire, Worksheet excelSheetInterop)
         {
             this.excelSheetSpire = excelSheetSpire;
@@ -41,9 +46,9 @@ namespace ExcelExport.Excel
             return preview;
         }
 
-        public void ExportToPDF(string filePath, string fileName)
+        public void ExportToPDF(string filePath)
         {
-            excelSheetInterop.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, filePath + fileName, XlFixedFormatQuality.xlQualityStandard, true, true, 1, 10, false);
+            excelSheetInterop.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, filePath, XlFixedFormatQuality.xlQualityStandard, true, true, 1, 10, false);
         }
 
         private Image CropImage(Image originalImage, int cropTop, int cropBottom, int cropLeft, int cropRight)
