@@ -24,10 +24,30 @@ namespace ExcelExport
     /// </summary>
     public partial class MainWindow : Window
     {
+        Excel.ExcelFile test;
+
         public MainWindow()
         {
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
+
             DataContext = new MainViewModel();
             InitializeComponent();
+
+            ExcelTest();
+        }
+
+        private void OnProcessExit(object sender, EventArgs e)
+        {
+            test.Close();
+        }
+
+        private void ExcelTest()
+        {
+            test = new Excel.ExcelFile(@"C:\temp\Temp.xlsx");
+
+            System.Drawing.Image imageTest = test.ExcelSheets[0].Preview();
+
+            imageTest.Save(@"C:\temp\ImageTest.jpeg");
         }
     }
 }

@@ -9,6 +9,9 @@ namespace ExcelExport.Excel
 {
     class ExcelFile
     {
+        private Spire.Xls.Workbook excelFileSpire;
+        private Application excelFileInterop;
+        private Workbook excelBook;
 
         public List<ExcelSheet> ExcelSheets { get; private set; }
 
@@ -17,17 +20,22 @@ namespace ExcelExport.Excel
             ExcelSheets = new List<ExcelSheet>();
 
             //For image
-            Spire.Xls.Workbook excelFileSpire = new Spire.Xls.Workbook();
+            excelFileSpire = new Spire.Xls.Workbook();
             excelFileSpire.LoadFromFile(filePath);
 
             //For PDF
-            Application excelFileInterop = new Application();
-            Workbook excelBook = excelFileInterop.Workbooks.Open(filePath);
+            excelFileInterop = new Application();
+            excelBook = excelFileInterop.Workbooks.Open(filePath);
 
             for(int idx = 0; idx < excelFileSpire.Worksheets.Count; idx++)
             {
                 ExcelSheets.Add(new ExcelSheet(excelFileSpire.Worksheets[idx], excelBook.Sheets[idx+1]));
             }
+        }
+
+        public void Close()
+        {
+            excelBook.Close();
         }
     }
 }
