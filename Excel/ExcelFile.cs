@@ -17,6 +17,7 @@ namespace ExcelExport.Excel
 
         public ExcelFile(string filePath)
         {
+            AppDomain.CurrentDomain.ProcessExit += (sender, e) => { Close(); };
             ExcelSheets = new List<ExcelSheet>();
 
             //For image

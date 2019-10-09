@@ -29,17 +29,9 @@ namespace ExcelExport
 
         public MainWindow()
         {
-            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
-
-            DataContext = new MainViewModel();
             InitializeComponent();
 
             ExcelTest();
-        }
-
-        private void OnProcessExit(object sender, EventArgs e)
-        {
-            test.Close();
         }
 
         private void ExcelTest()
