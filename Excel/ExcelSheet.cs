@@ -31,19 +31,19 @@ namespace ExcelExport.Excel
             this.excelSheetInterop = excelSheetInterop;
         }
 
-        public Image Preview()
+        public Bitmap Preview()
         {
-            Image preview;
+            Bitmap bitmapPreview;
 
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 excelSheetSpire.ToEMFStream(memoryStream, 1, 1, excelSheetSpire.LastRow, excelSheetSpire.LastColumn);
-                preview = Image.FromStream(memoryStream);
+                Image preview = Image.FromStream(memoryStream);
 
-                preview = CropImage(preview, CROP_TOP, CROP_BOTTOM, CROP_LEFT, CROP_RIGHT);
+                bitmapPreview = CropImage(preview, CROP_TOP, CROP_BOTTOM, CROP_LEFT, CROP_RIGHT);
             }
 
-            return preview;
+            return bitmapPreview;
         }
 
         public void ExportToPDF(string filePath)
@@ -51,12 +51,12 @@ namespace ExcelExport.Excel
             excelSheetInterop.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, filePath, XlFixedFormatQuality.xlQualityStandard, true, true, 1, 10, false);
         }
 
-        private Image CropImage(Image originalImage, int cropTop, int cropBottom, int cropLeft, int cropRight)
+        private Bitmap CropImage(Image originalImage, int cropTop, int cropBottom, int cropLeft, int cropRight)
         {
             Bitmap cropImage = new Bitmap(originalImage);
             Bitmap bmpCrop = cropImage.Clone(new System.Drawing.Rectangle(cropLeft, cropTop, cropImage.Width - cropLeft - cropRight, cropImage.Height - cropTop - cropBottom), cropImage.PixelFormat);
 
-            return (Image)bmpCrop;
+            return bmpCrop;
         }
     }
 }
