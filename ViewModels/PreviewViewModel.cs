@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace ExcelExport.ViewModels
 {
@@ -16,7 +17,28 @@ namespace ExcelExport.ViewModels
     {
         private ExcelFile _excelFile;
         private List<ExcelSheet> _sheetsToExport = new List<ExcelSheet>();
-        public Bitmap _currentPreview;
+        private BitmapImage _currentPreview;
+        private string _currentPreviewName;
+
+        private int currentPreviewIndex = 0;
+
+        public ICommand Previous => new Command(() => 
+        {
+            currentPreviewIndex--;
+            if (!Render(currentPreviewIndex))
+            {
+                currentPreviewIndex++;
+            }
+        });
+
+        public ICommand Next => new Command(() =>
+        {
+            currentPreviewIndex++;
+            if (!Render(currentPreviewIndex))
+            {
+                currentPreviewIndex--;
+            }
+        });
 
         public ExcelFile ExcelFile
         {
@@ -24,24 +46,34 @@ namespace ExcelExport.ViewModels
             set => SetProperty(ref _excelFile, value);
         }
 
-        private string _test;
-        public string test
+        public string CurrentPreviewName
         {
-            get => _test;
-            set => SetProperty(ref _test, value);
+            get => _currentPreviewName;
+            set => SetProperty(ref _currentPreviewName, value);
         }
 
-        public Bitmap CurrentPreview
+        public BitmapImage CurrentPreview
         {
             get => _currentPreview;
             set => SetProperty(ref _currentPreview, value);
         }
 
+        public bool Render(int index)
+        {
+            if (ExcelFile?.ExcelSheets == null || ExcelFile.ExcelSheets.Count < 1 || index < 0 || index >= ExcelFile.ExcelSheets.Count) 
+                return false;
+
+            var sheet = ExcelFile.ExcelSheets[index];
+            CurrentPreviewName = sheet.SheetName;
+            CurrentPreview = sheet.Preview();
+
+            return true;
+        }
+
         public override void Prepare(ExcelFile parameter)
         {
             ExcelFile = parameter;
-            test = parameter.ExcelSheets[0].SheetName;
-            CurrentPreview = ExcelFile.ExcelSheets[0].Preview();
+            Render(0);
         }
     }
 }

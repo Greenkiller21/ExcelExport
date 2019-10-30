@@ -17,6 +17,9 @@ using Spire.Xls;
 using System.Drawing;
 using System.IO;
 using MvvmCross.Platforms.Wpf.Views;
+using ExcelExport.Excel;
+using MvvmCross.Navigation;
+using MvvmCross;
 
 namespace ExcelExport
 {
@@ -31,16 +34,14 @@ namespace ExcelExport
         {
             InitializeComponent();
 
-            ExcelTest();
+            //ExcelTest();
         }
 
         private void ExcelTest()
         {
             test = new Excel.ExcelFile(@"C:\temp\Temp.xlsx");
 
-            System.Drawing.Image imageTest = test.ExcelSheets[0].Preview();
-
-            imageTest.Save(@"C:\temp\ImageTest.jpeg");
+            Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<PreviewViewModel, ExcelFile>(test);
         }
     }
 }

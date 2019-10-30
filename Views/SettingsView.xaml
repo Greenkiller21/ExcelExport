@@ -6,9 +6,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ExcelExport.Views"
-             mc:Ignorable="d" 
+    xmlns:customcomponents="clr-namespace:ExcelExport.Views.CustomComponents"
+    mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Label Content="{Binding FilePath}" />
-    </Grid>
+    <customcomponents:Shared>
+        <StackPanel>
+            <Label Content="Settings" Margin="0,0,0,10" FontWeight="Bold" FontSize="20" HorizontalContentAlignment="Center" />
+            <Label Content="File naming : " />
+            <TextBox Text="{Binding FileNaming, UpdateSourceTrigger=PropertyChanged}" Height="30px" VerticalContentAlignment="Center" />
+            <TextBlock Margin="0,10,0,0">
+                <Run>{year} : L'année</Run><LineBreak />
+                <Run>{month} : Le mois</Run><LineBreak />
+                <Run>{day} : Le jour</Run><LineBreak />
+                <Run>{sheetName} : Le nom de la feuille</Run>
+            </TextBlock>
+            <Button Command="{Binding Back}" Content="Back" Height="30px" Margin="0,10,0,0" />
+        </StackPanel>
+    </customcomponents:Shared>
 </views:MvxWpfView>

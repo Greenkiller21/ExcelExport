@@ -15,28 +15,6 @@ namespace ExcelExport.ViewModels
 {
     class MainViewModel : MvxViewModel
     {
-        private ExcelFile file;
-
-        public ICommand OpenFiles
-        {
-            get => new Command(async () => 
-            {
-                OpenFileDialog ofdFile = new OpenFileDialog();
-                ofdFile.Filter = "Excel files (*.xlsx)|*.xlsx";
-                ofdFile.Title = "Choose a file to open";
-                ofdFile.CheckFileExists = true;
-                ofdFile.CheckPathExists = true;
-                ofdFile.Multiselect = false;
-                ofdFile.InitialDirectory = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\Downloads");
-                if (ofdFile.ShowDialog() != true) return;
-
-                string filePath = ofdFile.FileNames?.First();
-                if (string.IsNullOrWhiteSpace(filePath)) return;
-
-                file = new ExcelFile(filePath);
-
-                await Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<PreviewViewModel, ExcelFile>(file);
-            });
-        }
+        public ICommand OpenFile => Views.CustomComponents.Shared.OpenFile;
     }
 }

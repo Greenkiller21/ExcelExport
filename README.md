@@ -13,7 +13,7 @@ Used to export excel sheets to pdf files
 	- Boucle sur la liste des feuilles
 	- Génération d'un fichier pdf pour chacune des feuilles
 	- Convention de nommage incluant le nom de la feuille : 
-		- {year}.{month}.{day}_{SheetName}_Custom.pdf
+		- {year}.{month}.{day}_{sheetName}.pdf
 		- Menu options -> Description avec explications des paramètres possibles
 		- Bloquage de modification d'extension (Extension dans un label juste après la textbox)
 

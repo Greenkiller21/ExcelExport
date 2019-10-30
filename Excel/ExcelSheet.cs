@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using Microsoft.Office.Interop.Excel;
-
+using System.Windows.Media.Imaging;
+using System.Drawing.Imaging;
 
 namespace ExcelExport.Excel
 {
@@ -31,7 +32,7 @@ namespace ExcelExport.Excel
             this.excelSheetInterop = excelSheetInterop;
         }
 
-        public Bitmap Preview()
+        public BitmapImage Preview()
         {
             Bitmap bitmapPreview;
 
@@ -43,7 +44,7 @@ namespace ExcelExport.Excel
                 bitmapPreview = CropImage(preview, CROP_TOP, CROP_BOTTOM, CROP_LEFT, CROP_RIGHT);
             }
 
-            return bitmapPreview;
+            return ToBitmapImage(bitmapPreview);
         }
 
         public void ExportToPDF(string filePath)
@@ -51,12 +52,30 @@ namespace ExcelExport.Excel
             excelSheetInterop.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, filePath, XlFixedFormatQuality.xlQualityStandard, true, true, 1, 10, false);
         }
 
-        private Bitmap CropImage(Image originalImage, int cropTop, int cropBottom, int cropLeft, int cropRight)
+        private static Bitmap CropImage(Image originalImage, int cropTop, int cropBottom, int cropLeft, int cropRight)
         {
             Bitmap cropImage = new Bitmap(originalImage);
             Bitmap bmpCrop = cropImage.Clone(new System.Drawing.Rectangle(cropLeft, cropTop, cropImage.Width - cropLeft - cropRight, cropImage.Height - cropTop - cropBottom), cropImage.PixelFormat);
 
             return bmpCrop;
+        }
+
+        public static BitmapImage ToBitmapImage(Bitmap bitmap)
+        {
+            using (var memory = new MemoryStream())
+            {
+                bitmap.Save(memory, ImageFormat.Png);
+                memory.Position = 0;
+
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+
+                return bitmapImage;
+            }
         }
     }
 }
