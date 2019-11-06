@@ -1,4 +1,6 @@
 ﻿using ExcelExport.ViewModels;
+using MvvmCross;
+using MvvmCross.Core.Navigation;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
