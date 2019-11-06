@@ -42,6 +42,8 @@ namespace ExcelExport.Excel
                 Image preview = Image.FromStream(memoryStream);
 
                 bitmapPreview = CropImage(preview, CROP_TOP, CROP_BOTTOM, CROP_LEFT, CROP_RIGHT);
+
+                Graphics g = Graphics.FromImage(bitmapPreview);
             }
 
             return ToBitmapImage(bitmapPreview);

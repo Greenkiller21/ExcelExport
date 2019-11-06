@@ -19,6 +19,7 @@ namespace ExcelExport.ViewModels
         private List<ExcelSheet> _sheetsToExport = new List<ExcelSheet>();
         private BitmapImage _currentPreview;
         private string _currentPreviewName;
+        private List<string> _currentPreviewNameList = new List<string>();
 
         private int currentPreviewIndex = 0;
 
@@ -49,7 +50,17 @@ namespace ExcelExport.ViewModels
         public string CurrentPreviewName
         {
             get => _currentPreviewName;
-            set => SetProperty(ref _currentPreviewName, value);
+            set
+            {
+                SetProperty(ref _currentPreviewName, value);
+                Render(ExcelFile.ExcelSheets.IndexOf(ExcelFile.ExcelSheets.Where(file => file.SheetName == value).FirstOrDefault()));
+            }
+        }
+
+        public List<string> CurrentPreviewNameList
+        {
+            get => _currentPreviewNameList;
+            set => SetProperty(ref _currentPreviewNameList, value);
         }
 
         public BitmapImage CurrentPreview
@@ -63,8 +74,8 @@ namespace ExcelExport.ViewModels
             if (ExcelFile?.ExcelSheets == null || ExcelFile.ExcelSheets.Count < 1 || index < 0 || index >= ExcelFile.ExcelSheets.Count) 
                 return false;
 
+
             var sheet = ExcelFile.ExcelSheets[index];
-            CurrentPreviewName = sheet.SheetName;
             CurrentPreview = sheet.Preview();
 
             return true;
@@ -73,6 +84,13 @@ namespace ExcelExport.ViewModels
         public override void Prepare(ExcelFile parameter)
         {
             ExcelFile = parameter;
+            
+            foreach(var sheet in ExcelFile.ExcelSheets)
+            {
+                CurrentPreviewNameList.Add(sheet.SheetName);
+            }
+
+            CurrentPreviewName = ExcelFile.ExcelSheets[0].SheetName;
             Render(0);
         }
     }
