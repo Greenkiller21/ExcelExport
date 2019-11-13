@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 
 namespace ExcelExport.ViewModels
 {
-    class PreviewViewModel : MvxViewModel<ExcelFile>
+    class PreviewViewModel : MvxViewModel
     {
         private ExcelFile _excelFile;
         private List<ExcelSheet> _sheetsToExport = new List<ExcelSheet>();
@@ -88,16 +88,18 @@ namespace ExcelExport.ViewModels
             return ExcelFile.ExcelSheets.IndexOf(ExcelFile.ExcelSheets.Where(file => file.SheetName == CurrentPreviewName).FirstOrDefault());
         }
 
-        public override void Prepare(ExcelFile parameter)
+        public override Task Initialize()
         {
-            ExcelFile = parameter;
-            
-            foreach(var sheet in ExcelFile.ExcelSheets)
+            ExcelFile = Views.CustomComponents.Shared.CurrentExcelFile;
+
+            foreach (var sheet in ExcelFile.ExcelSheets)
             {
                 CurrentPreviewNameList.Add(sheet.SheetName);
             }
 
             Render(0);
+
+            return base.Initialize();
         }
     }
 }

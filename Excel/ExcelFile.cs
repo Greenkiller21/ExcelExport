@@ -7,7 +7,7 @@ using Microsoft.Office.Interop.Excel;
 
 namespace ExcelExport.Excel
 {
-    class ExcelFile
+    public class ExcelFile
     {
         private Spire.Xls.Workbook excelFileSpire;
         private Application excelFileInterop;
@@ -17,9 +17,6 @@ namespace ExcelExport.Excel
 
         public ExcelFile(string filePath)
         {
-            AppDomain.CurrentDomain.ProcessExit += FileChanged;
-            Views.CustomComponents.Shared.FileChangedEvent += FileChanged;
-
             ExcelSheets = new List<ExcelSheet>();
 
             //For image
@@ -36,17 +33,11 @@ namespace ExcelExport.Excel
             }
         }
 
-        private void FileChanged(object sender, EventArgs e)
-        {
-            Close();
-
-            AppDomain.CurrentDomain.ProcessExit -= FileChanged;
-            Views.CustomComponents.Shared.FileChangedEvent -= FileChanged;
-        }
-
         public void Close()
         {
             excelBook.Close();
+            excelFileInterop.Quit();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelFileInterop);
         }
     }
 }

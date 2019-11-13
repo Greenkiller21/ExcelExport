@@ -20,6 +20,8 @@ namespace ExcelExport.Views.CustomComponents
     /// </summary>
     public partial class Shared : UserControl
     {
+        public static ExcelFile CurrentExcelFile = null;
+
         public static ICommand OpenFile => new Command(async () =>
         {
             var ofdFile = new OpenFileDialog();
@@ -34,12 +36,18 @@ namespace ExcelExport.Views.CustomComponents
             var filePath = ofdFile.FileNames?.First();
             if (string.IsNullOrWhiteSpace(filePath)) return;
 
-            FileChangedEvent?.Invoke(null, null);
+            FileChanged(null, null);
 
-            var file = new ExcelFile(filePath);
+            CurrentExcelFile = new ExcelFile(filePath);
 
-            await Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<PreviewViewModel, ExcelFile>(file);
+            await Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<PreviewViewModel>();
         });
+
+        public static void FileChanged(object sender, EventArgs e)
+        {
+            AppDomain.CurrentDomain.ProcessExit -= FileChanged;
+            CurrentExcelFile?.Close();
+        }
 
         public static ICommand Settings => new Command(async () =>
         {
@@ -48,10 +56,8 @@ namespace ExcelExport.Views.CustomComponents
 
         public Shared()
         {
+            AppDomain.CurrentDomain.ProcessExit += FileChanged;
             InitializeComponent();
         }
-
-        public delegate void FileChangedEventHandler(object sender, EventArgs e);
-        public static event FileChangedEventHandler FileChangedEvent;
     }
 }

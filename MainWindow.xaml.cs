@@ -28,20 +28,9 @@ namespace ExcelExport
     /// </summary>
     public partial class MainWindow : MvxWindow
     {
-        Excel.ExcelFile test;
-
         public MainWindow()
         {
             InitializeComponent();
-
-            //ExcelTest();
-        }
-
-        private void ExcelTest()
-        {
-            test = new Excel.ExcelFile(@"C:\temp\Temp.xlsx");
-
-            Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<PreviewViewModel, ExcelFile>(test);
         }
     }
 }

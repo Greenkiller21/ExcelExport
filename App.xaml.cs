@@ -31,7 +31,7 @@ namespace ExcelExport
             Stack<Type> navigation = new Stack<Type>(new Type[] { typeof(MainViewModel) });
             Mvx.IoCProvider.Resolve<IMvxNavigationService>().BeforeNavigate += (sender, e) =>
             {
-                if (navigation.Count > 0 && e.ViewModel.GetType() == navigation.Peek())
+                if (navigation.Count > 0 && e.ViewModel.GetType() == navigation.Peek() && e.ViewModel.GetType() != typeof(PreviewViewModel))
                 {
                     e.Cancel = true;
                 }

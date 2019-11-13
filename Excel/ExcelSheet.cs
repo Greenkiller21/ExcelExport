@@ -11,7 +11,7 @@ using System.Drawing.Imaging;
 
 namespace ExcelExport.Excel
 {
-    class ExcelSheet
+    public class ExcelSheet
     {
         const int CROP_TOP = 35;
         const int CROP_BOTTOM = 35;
