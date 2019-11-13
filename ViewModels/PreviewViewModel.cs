@@ -21,24 +21,18 @@ namespace ExcelExport.ViewModels
         private string _currentPreviewName;
         private List<string> _currentPreviewNameList = new List<string>();
 
-        private int currentPreviewIndex = 0;
+        private bool isRendered = true;
 
         public ICommand Previous => new Command(() => 
         {
-            currentPreviewIndex--;
-            if (!Render(currentPreviewIndex))
-            {
-                currentPreviewIndex++;
-            }
+            isRendered = true;
+            Render(GetCurrentSheetIndex() - 1);
         });
 
         public ICommand Next => new Command(() =>
         {
-            currentPreviewIndex++;
-            if (!Render(currentPreviewIndex))
-            {
-                currentPreviewIndex--;
-            }
+            isRendered = true;
+            Render(GetCurrentSheetIndex() + 1);
         });
 
         public ExcelFile ExcelFile
@@ -53,7 +47,12 @@ namespace ExcelExport.ViewModels
             set
             {
                 SetProperty(ref _currentPreviewName, value);
-                Render(ExcelFile.ExcelSheets.IndexOf(ExcelFile.ExcelSheets.Where(file => file.SheetName == value).FirstOrDefault()));
+
+                if (!isRendered)
+                {
+                    isRendered = true;
+                    Render(GetCurrentSheetIndex());
+                }
             }
         }
 
@@ -77,8 +76,16 @@ namespace ExcelExport.ViewModels
 
             var sheet = ExcelFile.ExcelSheets[index];
             CurrentPreview = sheet.Preview();
+            CurrentPreviewName = sheet.SheetName;
+
+            isRendered = false;
 
             return true;
+        }
+
+        public int GetCurrentSheetIndex()
+        {
+            return ExcelFile.ExcelSheets.IndexOf(ExcelFile.ExcelSheets.Where(file => file.SheetName == CurrentPreviewName).FirstOrDefault());
         }
 
         public override void Prepare(ExcelFile parameter)
@@ -90,7 +97,6 @@ namespace ExcelExport.ViewModels
                 CurrentPreviewNameList.Add(sheet.SheetName);
             }
 
-            CurrentPreviewName = ExcelFile.ExcelSheets[0].SheetName;
             Render(0);
         }
     }
