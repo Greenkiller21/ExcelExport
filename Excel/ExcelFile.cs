@@ -17,7 +17,9 @@ namespace ExcelExport.Excel
 
         public ExcelFile(string filePath)
         {
-            AppDomain.CurrentDomain.ProcessExit += (sender, e) => { Close(); };
+            AppDomain.CurrentDomain.ProcessExit += FileChanged;
+            Views.CustomComponents.Shared.FileChangedEvent += FileChanged;
+
             ExcelSheets = new List<ExcelSheet>();
 
             //For image
@@ -32,6 +34,14 @@ namespace ExcelExport.Excel
             {
                 ExcelSheets.Add(new ExcelSheet(excelFileSpire.Worksheets[idx], excelBook.Sheets[idx+1]));
             }
+        }
+
+        private void FileChanged(object sender, EventArgs e)
+        {
+            Close();
+
+            AppDomain.CurrentDomain.ProcessExit -= FileChanged;
+            Views.CustomComponents.Shared.FileChangedEvent -= FileChanged;
         }
 
         public void Close()

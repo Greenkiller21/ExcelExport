@@ -34,6 +34,8 @@ namespace ExcelExport.Views.CustomComponents
             var filePath = ofdFile.FileNames?.First();
             if (string.IsNullOrWhiteSpace(filePath)) return;
 
+            FileChangedEvent?.Invoke(null, null);
+
             var file = new ExcelFile(filePath);
 
             await Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<PreviewViewModel, ExcelFile>(file);
@@ -48,5 +50,8 @@ namespace ExcelExport.Views.CustomComponents
         {
             InitializeComponent();
         }
+
+        public delegate void FileChangedEventHandler(object sender, EventArgs e);
+        public static event FileChangedEventHandler FileChangedEvent;
     }
 }
