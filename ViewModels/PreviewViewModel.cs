@@ -70,16 +70,17 @@ namespace ExcelExport.ViewModels
 
         public bool Render(int index)
         {
-            if (ExcelFile?.ExcelSheets == null || ExcelFile.ExcelSheets.Count < 1 || index < 0 || index >= ExcelFile.ExcelSheets.Count) 
+            if (ExcelFile?.ExcelSheets == null || ExcelFile.ExcelSheets.Count < 1 || index < 0 || index >= ExcelFile.ExcelSheets.Count)
+            {
+                isRendered = false;
                 return false;
-
+            }
 
             var sheet = ExcelFile.ExcelSheets[index];
             CurrentPreview = sheet.Preview();
             CurrentPreviewName = sheet.SheetName;
 
             isRendered = false;
-
             return true;
         }
 
