@@ -17,6 +17,7 @@ namespace ExcelExport.Excel
         const int CROP_BOTTOM = 35;
         const int CROP_LEFT = 15;
         const int CROP_RIGHT = 60;
+        const int MIN_IMAGE_SIZE = 200;
 
         private Spire.Xls.Worksheet excelSheetSpire;
         private Worksheet excelSheetInterop;
@@ -42,6 +43,9 @@ namespace ExcelExport.Excel
                 Image preview = Image.FromStream(memoryStream);
 
                 bitmapPreview = CropImage(preview, CROP_TOP, CROP_BOTTOM, CROP_LEFT, CROP_RIGHT);
+
+                if (bitmapPreview.Width < MIN_IMAGE_SIZE || bitmapPreview.Height < MIN_IMAGE_SIZE)
+                    bitmapPreview = RoundWithWhite(bitmapPreview);
 
                 Graphics g = Graphics.FromImage(bitmapPreview);
             }
@@ -78,6 +82,20 @@ namespace ExcelExport.Excel
 
                 return bitmapImage;
             }
+        }
+
+        public static Bitmap RoundWithWhite(Bitmap bitmap)
+        {
+            Bitmap newImage = new Bitmap(MIN_IMAGE_SIZE, MIN_IMAGE_SIZE);
+            using (Graphics graphics = Graphics.FromImage(newImage))
+            {
+                graphics.Clear(Color.White);
+                int x = (newImage.Width - bitmap.Width) / 2;
+                int y = (newImage.Height - bitmap.Height) / 2;
+                graphics.DrawImage(bitmap, x, y);
+            }
+
+            return newImage;
         }
     }
 }
