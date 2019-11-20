@@ -53,6 +53,15 @@ namespace ExcelExport.Excel
             return ToBitmapImage(bitmapPreview);
         }
 
+        public BitmapImage SmallPreview
+        {
+            get
+            {
+                var preview = ToImage(Preview()) as Bitmap;
+                return ToBitmapImage(preview.Clone(new System.Drawing.Rectangle(0, 0, MIN_IMAGE_SIZE, MIN_IMAGE_SIZE), preview.PixelFormat));
+            }
+        }
+
         public void ExportToPDF(string filePath)
         {
             excelSheetInterop.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, filePath, XlFixedFormatQuality.xlQualityStandard, true, true, 1, 10, false);
@@ -61,6 +70,7 @@ namespace ExcelExport.Excel
         private static Bitmap CropImage(Image originalImage, int cropTop, int cropBottom, int cropLeft, int cropRight)
         {
             Bitmap cropImage = new Bitmap(originalImage);
+
             Bitmap bmpCrop = cropImage.Clone(new System.Drawing.Rectangle(cropLeft, cropTop, cropImage.Width - cropLeft - cropRight, cropImage.Height - cropTop - cropBottom), cropImage.PixelFormat);
 
             return bmpCrop;
@@ -90,12 +100,29 @@ namespace ExcelExport.Excel
             using (Graphics graphics = Graphics.FromImage(newImage))
             {
                 graphics.Clear(Color.White);
-                int x = (newImage.Width - bitmap.Width) / 2;
-                int y = (newImage.Height - bitmap.Height) / 2;
-                graphics.DrawImage(bitmap, x, y);
+                graphics.DrawImage(bitmap, 0, 0);
             }
 
             return newImage;
+        }
+
+        public static Image ToImage(BitmapImage bitmap)
+        {
+            var image = BitmapImageToBitmap(bitmap) as Image;
+            return image;
+        }
+
+        public static Bitmap BitmapImageToBitmap(BitmapImage bitmapImage)
+        {
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+                enc.Save(outStream);
+                System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
+
+                return new Bitmap(bitmap);
+            }
         }
     }
 }

@@ -7,6 +7,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ExcelExport.Views"
     xmlns:customcomponents="clr-namespace:ExcelExport.Views.CustomComponents"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <views:MvxWpfView.Resources>
@@ -19,14 +20,38 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Image Grid.Row="0" Source="{Binding CurrentPreview}" />
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Command="{Binding Previous}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
-                    <Image Source="/arrowLeft.jpg" />
-                </Button>
-                <ComboBox ItemsSource="{Binding CurrentPreviewNameList}" SelectedItem="{Binding CurrentPreviewName, Mode=TwoWay}" MinWidth="100px" VerticalContentAlignment="Center" Margin="10,10,10,10" />
-                <Button Command="{Binding Next}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
-                    <Image Source="/arrowRight.jpg" />
-                </Button>
+            <StackPanel Grid.Row="1">
+                <ItemsControl ItemsSource="{Binding ExcelSheets}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="10px, 0px, 10px, 0px" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Border BorderBrush="Black" BorderThickness="1px" Width="200px" Height="200px" Margin="0px, 0px, 5px, 0px">
+                                    <Image Source="{Binding SmallPreview}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseDown">
+                                                <i:InvokeCommandAction Command="{Binding DataContext.PreviewClicked, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:MvxWpfView}}}" CommandParameter="{Binding SheetName}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Image>
+                                </Border>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Command="{Binding Previous}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
+                        <Image Source="/arrowLeft.jpg" />
+                    </Button>
+                    <ComboBox ItemsSource="{Binding CurrentPreviewNameList}" SelectedItem="{Binding CurrentPreviewName, Mode=TwoWay}" MinWidth="100px" VerticalContentAlignment="Center" Margin="10,10,10,10" />
+                    <Button Command="{Binding Next}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
+                        <Image Source="/arrowRight.jpg" />
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </customcomponents:Shared>

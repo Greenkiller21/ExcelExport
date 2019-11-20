@@ -35,9 +35,13 @@ namespace ExcelExport.Excel
 
         public void Close()
         {
-            excelBook.Close();
-            excelFileInterop.Quit();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelFileInterop);
+            try
+            {
+                excelBook.Close();
+                excelFileInterop.Quit();
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(excelFileInterop);
+            }
+            catch { }
         }
     }
 }

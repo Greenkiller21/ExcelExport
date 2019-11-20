@@ -35,6 +35,11 @@ namespace ExcelExport.ViewModels
             Render(GetCurrentSheetIndex() + 1);
         });
 
+        public ICommand PreviewClicked => new Command((obj) => 
+        {
+            CurrentPreviewName = obj as string;
+        });
+
         public ExcelFile ExcelFile
         {
             get => _excelFile;
@@ -66,6 +71,11 @@ namespace ExcelExport.ViewModels
         {
             get => _currentPreview;
             set => SetProperty(ref _currentPreview, value);
+        }
+
+        public List<ExcelSheet> ExcelSheets
+        {
+            get => ExcelFile?.ExcelSheets;
         }
 
         public bool Render(int index)

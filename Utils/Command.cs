@@ -10,9 +10,14 @@ namespace ExcelExport.Utils
     public class Command : ICommand
     {
         public event EventHandler CanExecuteChanged;
-        private Action _action;
+        private Action<object> _action;
 
         public Command(Action action)
+        {
+            _action = (obj) => action();
+        }
+
+        public Command(Action<object> action)
         {
             _action = action;
         }
@@ -24,7 +29,7 @@ namespace ExcelExport.Utils
 
         public void Execute(object parameter)
         {
-            _action.Invoke();
+            _action.Invoke(parameter);
         }
     }
 }
