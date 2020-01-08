@@ -39,7 +39,15 @@ namespace ExcelExport.Excel
 
             using (MemoryStream memoryStream = new MemoryStream())
             {
-                excelSheetSpire.ToEMFStream(memoryStream, 1, 1, excelSheetSpire.LastRow, excelSheetSpire.LastColumn);
+                try
+                {
+                    excelSheetSpire.ToEMFStream(memoryStream, 1, 1, excelSheetSpire.LastRow, excelSheetSpire.LastColumn);
+                }
+                catch
+                {
+                    return null;
+                }
+
                 Image preview = Image.FromStream(memoryStream);
 
                 bitmapPreview = CropImage(preview, CROP_TOP, CROP_BOTTOM, CROP_LEFT, CROP_RIGHT);
@@ -47,6 +55,7 @@ namespace ExcelExport.Excel
                 if (bitmapPreview.Width < MIN_IMAGE_SIZE || bitmapPreview.Height < MIN_IMAGE_SIZE)
                     bitmapPreview = RoundWithWhite(bitmapPreview);
 
+                bitmapPreview.Save($@"C:\temp\{SheetName}.png");
                 Graphics g = Graphics.FromImage(bitmapPreview);
             }
 
@@ -57,7 +66,10 @@ namespace ExcelExport.Excel
         {
             get
             {
-                var preview = ToImage(Preview()) as Bitmap;
+                var previewImage = Preview();
+                if (previewImage == null) return new BitmapImage();
+                
+                var preview = ToImage(previewImage) as Bitmap;
                 return ToBitmapImage(preview.Clone(new System.Drawing.Rectangle(0, 0, MIN_IMAGE_SIZE, MIN_IMAGE_SIZE), preview.PixelFormat));
             }
         }
@@ -96,7 +108,7 @@ namespace ExcelExport.Excel
 
         public static Bitmap RoundWithWhite(Bitmap bitmap)
         {
-            Bitmap newImage = new Bitmap(MIN_IMAGE_SIZE, MIN_IMAGE_SIZE);
+            Bitmap newImage = new Bitmap(bitmap.Width > MIN_IMAGE_SIZE ? bitmap.Width : MIN_IMAGE_SIZE, bitmap.Height > MIN_IMAGE_SIZE ? bitmap.Height : MIN_IMAGE_SIZE);
             using (Graphics graphics = Graphics.FromImage(newImage))
             {
                 graphics.Clear(Color.White);

@@ -107,6 +107,7 @@
     <Compile Include="Utils\Command.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\PreviewViewModel.cs" />
+    <Compile Include="Views\CustomComponents\PreviewEqualityConverter.cs" />
     <Compile Include="Views\CustomComponents\Shared.xaml.cs">
       <DependentUpon>Shared.xaml</DependentUpon>
     </Compile>
