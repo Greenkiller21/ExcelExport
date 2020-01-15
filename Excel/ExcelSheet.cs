@@ -63,7 +63,6 @@ namespace ExcelExport.Excel
                 if (bitmapPreview.Width < MIN_IMAGE_SIZE || bitmapPreview.Height < MIN_IMAGE_SIZE)
                     bitmapPreview = RoundWithWhite(bitmapPreview);
 
-                bitmapPreview.Save($@"C:\temp\{SheetName}.png");
                 Graphics g = Graphics.FromImage(bitmapPreview);
             }
 
