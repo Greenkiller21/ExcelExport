@@ -19,7 +19,7 @@
                             <MenuItem Header="_Open" Command="{Binding OpenFile}" />
                         </MenuItem>
                         <MenuItem Header="_Settings">
-                            <MenuItem Header="_File naming" Command="{Binding Settings}" />
+                            <MenuItem Header="_Settings" Command="{Binding Settings}" />
                         </MenuItem>
                     </Menu>
                 </Grid>

@@ -16,7 +16,6 @@ namespace ExcelExport.ViewModels
     class PreviewViewModel : MvxViewModel
     {
         private ExcelFile _excelFile;
-        private List<ExcelSheet> _sheetsToExport = new List<ExcelSheet>();
         private BitmapImage _currentPreview;
         private string _currentPreviewName;
         private List<string> _currentPreviewNameList = new List<string>();
@@ -38,6 +37,15 @@ namespace ExcelExport.ViewModels
         public ICommand PreviewClicked => new Command((obj) => 
         {
             CurrentPreviewName = obj as string;
+        });
+
+        public ICommand Export => new Command(() =>
+        {
+            foreach (var sheet in ExcelFile.ExcelSheets)
+            {
+                if (sheet.ToExport)
+                    sheet.ExportToPDF(SettingsViewModel.GetFileName(sheet));
+            }
         });
 
         public ExcelFile ExcelFile

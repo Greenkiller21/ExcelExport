@@ -20,7 +20,9 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Image Grid.Row="0" Source="{Binding CurrentPreview}" />
+            <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="10px, 10px, 10px, 10px">
+                <Image Source="{Binding CurrentPreview}" Stretch="None" />
+            </ScrollViewer>
             <StackPanel Grid.Row="1">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding ExcelSheets}">
@@ -54,22 +56,32 @@
                                                 <Setter Property="BorderThickness" Value="1px" />
                                             </Style>
                                         </Border.Style>
-                                        <Image Source="{Binding SmallPreview}" />
+                                        <Grid>
+                                            <CheckBox IsChecked="{Binding ToExport}" Panel.ZIndex="1" HorizontalAlignment="Right" BorderThickness="0.5" VerticalAlignment="Top">
+                                                <CheckBox.LayoutTransform>
+                                                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                                                </CheckBox.LayoutTransform>
+                                            </CheckBox>
+                                            <Image Source="{Binding SmallPreview}" />
+                                        </Grid>
                                     </Border>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Command="{Binding Previous}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
-                        <Image Source="/arrowLeft.jpg" />
-                    </Button>
-                    <ComboBox ItemsSource="{Binding CurrentPreviewNameList}" SelectedItem="{Binding CurrentPreviewName, Mode=TwoWay}" MinWidth="100px" VerticalContentAlignment="Center" Margin="10,10,10,10" />
-                    <Button Command="{Binding Next}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
-                        <Image Source="/arrowRight.jpg" />
-                    </Button>
-                </StackPanel>
+                <Grid>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Command="{Binding Previous}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
+                            <Image Source="/arrowLeft.jpg" />
+                        </Button>
+                        <ComboBox ItemsSource="{Binding CurrentPreviewNameList}" SelectedItem="{Binding CurrentPreviewName, Mode=TwoWay}" MinWidth="100px" VerticalContentAlignment="Center" Margin="10,10,10,10" />
+                        <Button Command="{Binding Next}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
+                            <Image Source="/arrowRight.jpg" />
+                        </Button>
+                    </StackPanel>
+                    <Button Command="{Binding Export}" Content="Export" HorizontalAlignment="Right" MinWidth="100px" Margin="10,10,10,10" />
+                </Grid>
             </StackPanel>
         </Grid>
     </customcomponents:Shared>

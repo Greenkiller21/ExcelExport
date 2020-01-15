@@ -4,21 +4,23 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ExcelExport.Views"
-    xmlns:customcomponents="clr-namespace:ExcelExport.Views.CustomComponents"
-    mc:Ignorable="d" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:customcomponents="clr-namespace:ExcelExport.Views.CustomComponents"
+             mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <customcomponents:Shared>
-        <StackPanel>
+        <StackPanel Margin="10px, 10px, 10px, 10px">
             <Label Content="Settings" Margin="0,0,0,10" FontWeight="Bold" FontSize="20" HorizontalContentAlignment="Center" />
+            <Label Content="Export location : " />
+            <Label Content="{Binding ExportFolder}" />
+            <Button Content="Choose location ..." Height="30px" Margin="0px, 0px, 0px, 10px" Command="{Binding ChooseLocation}" />
             <Label Content="File naming : " />
             <TextBox Text="{Binding FileNaming, UpdateSourceTrigger=PropertyChanged}" Height="30px" VerticalContentAlignment="Center" />
             <TextBlock Margin="0,10,0,0">
-                <Run>{year} : L'année</Run><LineBreak />
-                <Run>{month} : Le mois</Run><LineBreak />
-                <Run>{day} : Le jour</Run><LineBreak />
-                <Run>{sheetName} : Le nom de la feuille</Run>
+                <Run>{year} : Year</Run><LineBreak />
+                <Run>{month} : Month</Run><LineBreak />
+                <Run>{day} : Day</Run><LineBreak />
+                <Run>{sheetName} : Sheet name</Run>
             </TextBlock>
             <Button Command="{Binding Back}" Content="Back" Height="30px" Margin="0,10,0,0" />
         </StackPanel>

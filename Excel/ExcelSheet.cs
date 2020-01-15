@@ -8,23 +8,31 @@ using System.Drawing;
 using Microsoft.Office.Interop.Excel;
 using System.Windows.Media.Imaging;
 using System.Drawing.Imaging;
+using MvvmCross.Core.ViewModels;
 
 namespace ExcelExport.Excel
 {
-    public class ExcelSheet
+    public class ExcelSheet : MvxNotifyPropertyChanged
     {
         const int CROP_TOP = 72;
-        const int CROP_BOTTOM = 35;
+        const int CROP_BOTTOM = 72;
         const int CROP_LEFT = 68;
-        const int CROP_RIGHT = 60;
+        const int CROP_RIGHT = 68;
         const int MIN_IMAGE_SIZE = 200;
 
         private Spire.Xls.Worksheet excelSheetSpire;
         private Worksheet excelSheetInterop;
+        private bool _toExport = false;
 
         public string SheetName
         {
             get { return excelSheetInterop.Name; }
+        }
+
+        public bool ToExport
+        {
+            get => _toExport;
+            set => SetProperty(ref _toExport, value);
         }
 
         public ExcelSheet(Spire.Xls.Worksheet excelSheetSpire, Worksheet excelSheetInterop)
