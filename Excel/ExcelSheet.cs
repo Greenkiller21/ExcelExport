@@ -13,9 +13,9 @@ namespace ExcelExport.Excel
 {
     public class ExcelSheet
     {
-        const int CROP_TOP = 35;
+        const int CROP_TOP = 72;
         const int CROP_BOTTOM = 35;
-        const int CROP_LEFT = 15;
+        const int CROP_LEFT = 68;
         const int CROP_RIGHT = 60;
         const int MIN_IMAGE_SIZE = 200;
 
@@ -32,7 +32,7 @@ namespace ExcelExport.Excel
             this.excelSheetSpire = excelSheetSpire;
             this.excelSheetInterop = excelSheetInterop;
         }
-
+        
         public BitmapImage Preview()
         {
             Bitmap bitmapPreview;
