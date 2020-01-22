@@ -114,6 +114,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Command.cs" />
+    <Compile Include="Utils\ConfigFile.cs" />
+    <Compile Include="Utils\ConfigSection.cs" />
+    <Compile Include="Utils\ConfigValue.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\PreviewViewModel.cs" />
     <Compile Include="Views\CustomComponents\PreviewEqualityConverter.cs" />

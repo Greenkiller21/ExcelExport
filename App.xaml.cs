@@ -1,4 +1,5 @@
-﻿using ExcelExport.ViewModels;
+﻿using ExcelExport.Utils;
+using ExcelExport.ViewModels;
 using MvvmCross;
 using MvvmCross.Core;
 using MvvmCross.Navigation;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -28,6 +30,12 @@ namespace ExcelExport
         public override void ApplicationInitialized()
         {
             base.ApplicationInitialized();
+
+            var config = new ConfigFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ExcelExport", "config.ini"));
+            config.Load();
+
+            Mvx.IoCProvider.RegisterSingleton(config);
+
             Stack<Type> navigation = new Stack<Type>(new Type[] { typeof(MainViewModel) });
             Mvx.IoCProvider.Resolve<IMvxNavigationService>().BeforeNavigate += (sender, e) =>
             {

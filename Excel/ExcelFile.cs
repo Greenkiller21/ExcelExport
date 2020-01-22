@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ExcelExport.Utils;
 using Microsoft.Office.Interop.Excel;
+using MvvmCross;
 
 namespace ExcelExport.Excel
 {
@@ -40,6 +42,9 @@ namespace ExcelExport.Excel
                 excelBook.Close();
                 excelFileInterop.Quit();
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(excelFileInterop);
+
+                var config = Mvx.IoCProvider.GetSingleton<ConfigFile>();
+                config.Save();
             }
             catch { }
         }
