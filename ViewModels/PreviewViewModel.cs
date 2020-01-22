@@ -8,7 +8,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace ExcelExport.ViewModels
@@ -37,6 +40,15 @@ namespace ExcelExport.ViewModels
         public ICommand PreviewClicked => new Command((obj) => 
         {
             CurrentPreviewName = obj as string;
+        });
+
+        public ICommand PreviewChanged => new Command((obj) =>
+        {
+            var contentPresenter = (ContentPresenter)obj;
+            var scrollViewer = FindParent<ScrollViewer>(obj as DependencyObject);
+            var currentIdx = CurrentPreviewNameList.IndexOf(CurrentPreviewName);
+
+            scrollViewer.ScrollToHorizontalOffset(contentPresenter.ActualWidth * currentIdx);
         });
 
         public ICommand Export => new Command(() =>
@@ -119,6 +131,23 @@ namespace ExcelExport.ViewModels
             Render(0);
 
             return base.Initialize();
+        }
+
+        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            //Get parent item
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            //End of tree
+            if (parentObject == null) 
+                return null;
+
+            //Check if the parent matches the type we're looking for
+            T parent = parentObject as T;
+            if (parent != null)
+                return parent;
+            
+            return FindParent<T>(parentObject);
         }
     }
 }

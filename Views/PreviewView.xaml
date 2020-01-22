@@ -75,7 +75,14 @@
                         <Button Command="{Binding Previous}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
                             <Image Source="/arrowLeft.jpg" />
                         </Button>
-                        <ComboBox ItemsSource="{Binding CurrentPreviewNameList}" SelectedItem="{Binding CurrentPreviewName, Mode=TwoWay}" MinWidth="100px" VerticalContentAlignment="Center" Margin="10,10,10,10" />
+                        <ComboBox ItemsSource="{Binding CurrentPreviewNameList}" SelectedItem="{Binding CurrentPreviewName, Mode=TwoWay}" MinWidth="100px" VerticalContentAlignment="Center" Margin="10,10,10,10">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <!-- faux -->
+                                    <i:InvokeCommandAction Command="{Binding DataContext.PreviewChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:MvxWpfView}}}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                         <Button Command="{Binding Next}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
                             <Image Source="/arrowRight.jpg" />
                         </Button>
