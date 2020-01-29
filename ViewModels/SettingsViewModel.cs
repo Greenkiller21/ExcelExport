@@ -21,6 +21,14 @@ namespace ExcelExport.ViewModels
         private static string _fileNaming = "{year}.{month}.{day}_{sheetName}.pdf";
         private static string _exportFolder = GetFolderPath(SpecialFolder.MyDocuments);
 
+        public SettingsViewModel()
+        {
+            var config = Mvx.IoCProvider.GetSingleton<ConfigFile>();
+            var efc = config["Settings"]["ExportFolder"].Value;
+
+            ExportFolder = efc;
+        }
+
         public string FileNaming
         {
             get => _fileNaming;
@@ -30,7 +38,17 @@ namespace ExcelExport.ViewModels
         public string ExportFolder
         {
             get => _exportFolder;
-            set => SetProperty(ref _exportFolder, value);
+            set
+            {
+                var config = Mvx.IoCProvider.GetSingleton<ConfigFile>();
+
+                if (!string.IsNullOrWhiteSpace(value) && Directory.Exists(value))
+                {
+                    SetProperty(ref _exportFolder, value);
+                    config["Settings"]["ExportFolder"].Value = value;
+                    config.Save();
+                }
+            }
         }
 
         public static string GetExportFolder()

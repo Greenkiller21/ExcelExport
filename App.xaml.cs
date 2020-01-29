@@ -31,9 +31,8 @@ namespace ExcelExport
         {
             base.ApplicationInitialized();
 
-            var config = new ConfigFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ExcelExport", "config.ini"));
+            var config = new ConfigFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ExcelExport", "config.ini"));
             config.Load();
-
             Mvx.IoCProvider.RegisterSingleton(config);
 
             Stack<Type> navigation = new Stack<Type>(new Type[] { typeof(MainViewModel) });

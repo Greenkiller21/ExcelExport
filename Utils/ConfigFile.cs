@@ -16,10 +16,22 @@ namespace ExcelExport.Utils
         public ConfigFile(string pathToConfig)
         {
             _pathToConfig = pathToConfig;
+            EnsureDirectoryCreated(_pathToConfig);
+        }
+
+        private void EnsureDirectoryCreated(string path)
+        {
+            var info = new FileInfo(path);
+
+            if (!Directory.Exists(info.DirectoryName))
+                Directory.CreateDirectory(info.DirectoryName);
         }
 
         public void Load()
         {
+            if (!File.Exists(_pathToConfig))
+                File.Create(_pathToConfig).Close();
+
             var file = new StreamReader(_pathToConfig);
             var currentSection = new ConfigSection("default");
 
@@ -33,6 +45,8 @@ namespace ExcelExport.Utils
                     {
                         line = line.Replace("[", string.Empty).Replace("]", string.Empty);
 
+                        if (currentSection != null && currentSection.Values.Count > 0)
+                            Sections.Add(currentSection);
                         currentSection = new ConfigSection(line);
                     }
                     else if (line.Contains("="))
@@ -45,6 +59,9 @@ namespace ExcelExport.Utils
                     }
                 }
             }
+
+            if (currentSection != null && currentSection.Values.Count > 0)
+                Sections.Add(currentSection);
 
             file.Close();
         }
@@ -63,6 +80,8 @@ namespace ExcelExport.Utils
                     file.WriteLine($"{value.Key}={value.Value}");
                 }
             }
+
+            file.Close();
         }
 
         public ConfigSection this[string key]
@@ -71,9 +90,12 @@ namespace ExcelExport.Utils
             {
                 var section = Sections.FirstOrDefault(x => x.Name == key);
                 if (section == null)
+                {
                     section = new ConfigSection(key);
+                    Sections.Add(section);
+                }
 
-                return section;
+                return Sections.FirstOrDefault(x => x.Name == key);
             }
             set
             {

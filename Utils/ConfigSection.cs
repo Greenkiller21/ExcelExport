@@ -23,9 +23,12 @@ namespace ExcelExport.Utils
             {
                 var value = Values.FirstOrDefault(x => x.Key == key);
                 if (value == null)
+                {
                     value = new ConfigValue(key, "");
+                    Values.Add(value);
+                }
 
-                return value;
+                return Values.FirstOrDefault(x => x.Key == key);
             }
             set
             {

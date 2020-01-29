@@ -7,6 +7,7 @@ using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,17 +25,25 @@ namespace ExcelExport.Views.CustomComponents
 
         public static ICommand OpenFile => new Command(async () =>
         {
+            var config = Mvx.IoCProvider.GetSingleton<ConfigFile>();
+            var efc = config["Settings"]["ExcelFolder"].Value;
+
             var ofdFile = new OpenFileDialog();
             ofdFile.Filter = "Excel files (*.xlsx)|*.xlsx";
             ofdFile.Title = "Choose a file to open";
             ofdFile.CheckFileExists = true;
             ofdFile.CheckPathExists = true;
             ofdFile.Multiselect = false;
-            ofdFile.InitialDirectory = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\Downloads");
-            if (ofdFile.ShowDialog() != true) return;
+            ofdFile.InitialDirectory = string.IsNullOrWhiteSpace(efc) || !Directory.Exists(efc) ? Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\Downloads") : efc;
+            if (ofdFile.ShowDialog() != true) 
+                return;
 
             var filePath = ofdFile.FileNames?.First();
-            if (string.IsNullOrWhiteSpace(filePath)) return;
+            if (string.IsNullOrWhiteSpace(filePath)) 
+                return;
+
+            config["Settings"]["ExcelFolder"].Value = new FileInfo(filePath).DirectoryName;
+            config.Save();
 
             FileChanged(null, null);
 
