@@ -29,10 +29,41 @@ namespace ExcelExport.ViewModels
             ExportFolder = efc;
         }
 
+        public static void Load()
+        {
+            var config = Mvx.IoCProvider.GetSingleton<ConfigFile>();
+            
+            var value = config["Settings"]["FileNaming"].Value;
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                _fileNaming = value;
+                config["Settings"]["FileNaming"].Value = value;
+                config.Save();
+            }
+
+            value = config["Settings"]["ExportFolder"].Value;
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                _exportFolder = value;
+                config["Settings"]["ExportFolder"].Value = value;
+                config.Save();
+            }
+        }
+
         public string FileNaming
         {
             get => _fileNaming;
-            set => SetProperty(ref _fileNaming, value);
+            set
+            {
+                var config = Mvx.IoCProvider.GetSingleton<ConfigFile>();
+
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    SetProperty(ref _fileNaming, value);
+                    config["Settings"]["FileNaming"].Value = value;
+                    config.Save();
+                }
+            }
         }
 
         public string ExportFolder

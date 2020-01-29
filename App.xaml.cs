@@ -35,6 +35,8 @@ namespace ExcelExport
             config.Load();
             Mvx.IoCProvider.RegisterSingleton(config);
 
+            SettingsViewModel.Load();
+
             Stack<Type> navigation = new Stack<Type>(new Type[] { typeof(MainViewModel) });
             Mvx.IoCProvider.Resolve<IMvxNavigationService>().BeforeNavigate += (sender, e) =>
             {
