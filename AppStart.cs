@@ -12,7 +12,6 @@ namespace ExcelExport
     {
         public override void Initialize()
         {
-            //Mvx.IoCProvider.RegisterType<ICalculationService, CalculationService>();
             RegisterAppStart<MainViewModel>();
         }
     }
