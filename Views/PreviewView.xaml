@@ -57,12 +57,12 @@
                                             </Style>
                                         </Border.Style>
                                         <Grid>
-                                            <CheckBox IsChecked="{Binding ToExport}" Panel.ZIndex="1" HorizontalAlignment="Right" BorderThickness="0.5" VerticalAlignment="Top">
+                                            <CheckBox IsChecked="{Binding ToExport, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Panel.ZIndex="1" HorizontalAlignment="Right" BorderThickness="0.5" VerticalAlignment="Top">
                                                 <CheckBox.LayoutTransform>
                                                     <ScaleTransform ScaleX="2" ScaleY="2" />
                                                 </CheckBox.LayoutTransform>
                                             </CheckBox>
-                                            <Image Source="{Binding SmallPreview}" />
+                                            <Image Source="{Binding BitmapPreview}" />
                                         </Grid>
                                     </Border>
                                 </StackPanel>
@@ -71,16 +71,20 @@
                     </ItemsControl>
                 </ScrollViewer>
                 <Grid>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Button Command="{Binding SelectAll}" Content="Select All" HorizontalAlignment="Left" MinWidth="80px" Margin="10,10,10,10" />
+                        <Button Command="{Binding UnselectAll}" Content="Unselect All" HorizontalAlignment="Right" MinWidth="80px" Margin="10,10,10,10" />
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Command="{Binding Previous}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
+                        <Button Command="{Binding Previous}" Height="30px" MinWidth="60px" Margin="10,10,10,10">
                             <Image Source="/arrowLeft.jpg" />
                         </Button>
                         <ComboBox ItemsSource="{Binding CurrentPreviewNameList}" SelectedItem="{Binding CurrentPreviewName, Mode=TwoWay}" MinWidth="100px" VerticalContentAlignment="Center" Margin="10,10,10,10"/>
-                        <Button Command="{Binding Next}" Height="30px" MinWidth="100px" Margin="10,10,10,10">
+                        <Button Command="{Binding Next}" Height="30px" MinWidth="60px" Margin="10,10,10,10">
                             <Image Source="/arrowRight.jpg" />
                         </Button>
                     </StackPanel>
-                    <Button Command="{Binding Export}" Content="Export" HorizontalAlignment="Right" MinWidth="100px" Margin="10,10,10,10" />
+                    <Button Command="{Binding Export}" Content="Export" HorizontalAlignment="Right" MinWidth="80px" Margin="10,10,10,10" />
                 </Grid>
             </StackPanel>
         </Grid>

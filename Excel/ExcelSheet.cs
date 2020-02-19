@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +23,7 @@ namespace ExcelExport.Excel
         private Spire.Xls.Worksheet excelSheetSpire;
         private Worksheet excelSheetInterop;
         private bool _toExport = false;
+        private BitmapImage _bitmapPreview;
 
         public string SheetName
         {
@@ -35,10 +36,18 @@ namespace ExcelExport.Excel
             set => SetProperty(ref _toExport, value);
         }
 
+        public BitmapImage BitmapPreview
+        {
+            get => _bitmapPreview;
+            set => SetProperty(ref _bitmapPreview, value);
+        }
+
         public ExcelSheet(Spire.Xls.Worksheet excelSheetSpire, Worksheet excelSheetInterop)
         {
             this.excelSheetSpire = excelSheetSpire;
             this.excelSheetInterop = excelSheetInterop;
+
+            BitmapPreview = Preview();
         }
         
         public BitmapImage Preview()
@@ -73,10 +82,9 @@ namespace ExcelExport.Excel
         {
             get
             {
-                var previewImage = Preview();
-                if (previewImage == null) return new BitmapImage();
+                if (BitmapPreview == null) return new BitmapImage();
                 
-                var preview = ToImage(previewImage) as Bitmap;
+                var preview = ToImage(BitmapPreview) as Bitmap;
                 return ToBitmapImage(preview.Clone(new System.Drawing.Rectangle(0, 0, MIN_IMAGE_SIZE, MIN_IMAGE_SIZE), preview.PixelFormat));
             }
         }

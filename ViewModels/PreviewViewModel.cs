@@ -48,6 +48,22 @@ namespace ExcelExport.ViewModels
             }
         });
 
+        public ICommand SelectAll => new Command(() =>
+        {
+            foreach (var sheet in ExcelFile.ExcelSheets)
+            {
+                sheet.ToExport = true;
+            }
+        });
+
+        public ICommand UnselectAll => new Command(() =>
+        {
+            foreach (var sheet in ExcelFile.ExcelSheets)
+            {
+                sheet.ToExport = false;
+            }
+        });
+
         public ExcelFile ExcelFile
         {
             get => _excelFile;
@@ -95,7 +111,7 @@ namespace ExcelExport.ViewModels
             }
 
             var sheet = ExcelFile.ExcelSheets[index];
-            CurrentPreview = sheet.Preview();
+            CurrentPreview = sheet.BitmapPreview;
             CurrentPreviewName = sheet.SheetName;
 
             isRendered = false;
