@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ExcelExport.Utils;
 using Microsoft.Office.Interop.Excel;
 using MvvmCross;
+using MvvmCross.ViewModels;
 
 namespace ExcelExport.Excel
 {
@@ -15,12 +16,13 @@ namespace ExcelExport.Excel
         private Application excelFileInterop;
         private Workbook excelBook;
 
-        public List<ExcelSheet> ExcelSheets { get; private set; }
+        public MvxObservableCollection<ExcelSheet> ExcelSheets { get; private set; }
+        public System.Action RefreshAction { get; set; } = () => { };
 
         public ExcelFile(string filePath)
         {
-            ExcelSheets = new List<ExcelSheet>();
-
+            ExcelSheets = new MvxObservableCollection<ExcelSheet>();
+            
             //For image
             excelFileSpire = new Spire.Xls.Workbook();
             excelFileSpire.LoadFromFile(filePath);

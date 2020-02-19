@@ -54,6 +54,8 @@ namespace ExcelExport.ViewModels
             {
                 sheet.ToExport = true;
             }
+
+            RaisePropertyChanged(nameof(ExcelFile.ExcelSheets));
         });
 
         public ICommand UnselectAll => new Command(() =>
@@ -62,12 +64,18 @@ namespace ExcelExport.ViewModels
             {
                 sheet.ToExport = false;
             }
+
+            RaisePropertyChanged(nameof(ExcelFile.ExcelSheets));
         });
 
         public ExcelFile ExcelFile
         {
             get => _excelFile;
-            set => SetProperty(ref _excelFile, value);
+            set 
+            {
+                SetProperty(ref _excelFile, value);
+                ExcelFile.RefreshAction = () => { RaisePropertyChanged(nameof(ExcelSheets)); };
+            }
         }
 
         public string CurrentPreviewName
@@ -97,7 +105,7 @@ namespace ExcelExport.ViewModels
             set => SetProperty(ref _currentPreview, value);
         }
 
-        public List<ExcelSheet> ExcelSheets
+        public MvxObservableCollection<ExcelSheet> ExcelSheets
         {
             get => ExcelFile?.ExcelSheets;
         }

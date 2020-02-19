@@ -29,7 +29,7 @@ namespace ExcelExport.Views.CustomComponents
             var efc = config["Settings"]["ExcelFolder"].Value;
 
             var ofdFile = new OpenFileDialog();
-            ofdFile.Filter = "Excel files (*.xlsx)|*.xlsx";
+            ofdFile.Filter = "Excel Files|*.xlsx;*.xlsm;*.xlsb;*.xltx;*.xltm;*.xls;*.xlt;*.xls;*.xml;*.xml;*.xlam;*.xla;*.xlw;*.xlr";
             ofdFile.Title = "Choose a file to open";
             ofdFile.CheckFileExists = true;
             ofdFile.CheckPathExists = true;
