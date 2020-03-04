@@ -4,10 +4,13 @@ using Microsoft.Win32;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -41,10 +44,45 @@ namespace ExcelExport.ViewModels
 
         public ICommand Export => new Command(() =>
         {
+            bool exported = false;
+            DialogResult drReplace = DialogResult.No;
+            DialogResult drSaveChoice = DialogResult.No;
+
             foreach (var sheet in ExcelFile.ExcelSheets)
             {
                 if (sheet.ToExport)
-                    sheet.ExportToPDF(SettingsViewModel.GetFileName(sheet));
+                {
+                    string filePath = SettingsViewModel.GetFileName(sheet);
+
+                    if (File.Exists(filePath))
+                    {
+                        if (drSaveChoice == DialogResult.No)
+                        {
+                            drReplace = MessageBox.Show(string.Format("The file named {0} already exists, do you want to replace it ?", filePath.Split('\\').Last()), "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                            drSaveChoice = MessageBox.Show("Do you want to apply this choice for the next files ?", "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        }
+
+                        if (drReplace == DialogResult.Yes)
+                        {
+                            sheet.ExportToPDF(filePath);
+                        }
+                    }
+                    else
+                    {
+                        sheet.ExportToPDF(filePath);
+                    }
+                    
+                    exported = true;
+                }
+            }
+
+            if(exported)
+            {
+                MessageBox.Show("The export has been successfully completed", "Exportation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else 
+            {
+                MessageBox.Show("There is no file selected for the export", "Exportation", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         });
 
@@ -61,6 +99,18 @@ namespace ExcelExport.ViewModels
             foreach (var sheet in ExcelFile.ExcelSheets)
             {
                 sheet.ToExport = false;
+            }
+        });
+
+        public ICommand DestinationFolder => new Command(() =>
+        {
+            if (Directory.Exists(SettingsViewModel.GetExportFolder()))
+            {
+                Process.Start("explorer.exe", SettingsViewModel.GetExportFolder());
+            }
+            else
+            {
+                MessageBox.Show("The folder doesn't exist or isn't configured", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         });
 

@@ -72,19 +72,22 @@
                 </ScrollViewer>
                 <Grid>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Button Command="{Binding SelectAll}" Content="Select All" HorizontalAlignment="Left" MinWidth="80px" Margin="10,10,10,10" />
-                        <Button Command="{Binding UnselectAll}" Content="Unselect All" HorizontalAlignment="Right" MinWidth="80px" Margin="10,10,10,10" />
+                        <Button Command="{Binding SelectAll}" Content="Select All" HorizontalAlignment="Left" MinWidth="80px" Margin="10,10,10,10" ToolTip="Select all sheets"/>
+                        <Button Command="{Binding UnselectAll}" Content="Unselect All" HorizontalAlignment="Right" MinWidth="80px" Margin="10,10,10,10" ToolTip="Unselect all sheets"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Command="{Binding Previous}" Height="30px" MinWidth="60px" Margin="10,10,10,10">
+                        <Button Command="{Binding Previous}" Height="30px" MinWidth="60px" Margin="10,10,10,10" ToolTip="Previous">
                             <Image Source="/arrowLeft.jpg" />
                         </Button>
                         <ComboBox ItemsSource="{Binding CurrentPreviewNameList}" SelectedItem="{Binding CurrentPreviewName, Mode=TwoWay}" MinWidth="100px" VerticalContentAlignment="Center" Margin="10,10,10,10"/>
-                        <Button Command="{Binding Next}" Height="30px" MinWidth="60px" Margin="10,10,10,10">
+                        <Button Command="{Binding Next}" Height="30px" MinWidth="60px" Margin="10,10,10,10" ToolTip="Next">
                             <Image Source="/arrowRight.jpg" />
                         </Button>
                     </StackPanel>
-                    <Button Command="{Binding Export}" Content="Export" HorizontalAlignment="Right" MinWidth="80px" Margin="10,10,10,10" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Command="{Binding DestinationFolder}" Content="Destination Folder" HorizontalAlignment="Right" MinWidth="120px" Margin="10,10,10,10" ToolTip="Open the export destination folder" />
+                        <Button Command="{Binding Export}" Content="Export" HorizontalAlignment="Right" MinWidth="80px" Margin="10,10,10,10" ToolTip="Export the selected sheets"/>
+                    </StackPanel>
                 </Grid>
             </StackPanel>
         </Grid>
